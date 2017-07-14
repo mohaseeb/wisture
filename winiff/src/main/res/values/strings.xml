@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Winiff</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_text_pause">Pause</string>
+    <string name="button_text_start_measurement">Start measurement</string>
+    <string name="button_text_resume">Resume</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="measurements_file_prefix_text">Measurements file name</string>
+    <string name="sample_per_second_text">Samples per second</string>
+    <string name="graph_width_ext">Graph width in seconds</string>
+    <string name="manage_measurements_files_text">Manage files</string>
+    <string name="share_files">Share</string>
+    <string name="delete_files">Delete</string>
+    <string name="end_measurement">End</string>
+    <string name="share_files_string">Share via</string>
+</resources>
