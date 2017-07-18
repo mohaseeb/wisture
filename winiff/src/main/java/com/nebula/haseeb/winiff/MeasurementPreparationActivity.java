@@ -59,8 +59,8 @@ public class MeasurementPreparationActivity extends AppCompatActivity {
     private void setDefaultParametersValues() {
         EditText measurementsFilePrefix = (EditText) findViewById(R.id.measurements_file_prefix);
         measurementsFilePrefix.setText(measurementsParameters.getMeasurementsFileNamePrefix());
-        EditText samplesPerSecond = (EditText) findViewById(R.id.samples_per_second);
-        samplesPerSecond.setText(String.valueOf(measurementsParameters.getSamplesPerSecond()));
+//        EditText samplesPerSecond = (EditText) findViewById(R.id.samples_per_second);
+//        samplesPerSecond.setText(String.valueOf(measurementsParameters.getSamplesPerSecond()));
         EditText graphWidthSeconds = (EditText) findViewById(R.id.graph_width_seconds);
         graphWidthSeconds.setText(String.valueOf(measurementsParameters.getGraphWidthSeconds()));
     }
@@ -68,8 +68,8 @@ public class MeasurementPreparationActivity extends AppCompatActivity {
     private void getUserSetValues() {
         EditText measurementsFilePrefix = (EditText) findViewById(R.id.measurements_file_prefix);
         measurementsParameters.setMeasurementsFileNamePrefix(measurementsFilePrefix.getText().toString());
-        EditText samplesPerSecond = (EditText) findViewById(R.id.samples_per_second);
-        measurementsParameters.setSamplesPerSecond(Integer.valueOf(samplesPerSecond.getText().toString()));
+//        EditText samplesPerSecond = (EditText) findViewById(R.id.samples_per_second);
+//        measurementsParameters.setSamplesPerSecond(Integer.valueOf(samplesPerSecond.getText().toString()));
         EditText graphWidthSeconds = (EditText) findViewById(R.id.graph_width_seconds);
         measurementsParameters.setGraphWidthSeconds(Integer.valueOf(graphWidthSeconds.getText().toString()));
     }
