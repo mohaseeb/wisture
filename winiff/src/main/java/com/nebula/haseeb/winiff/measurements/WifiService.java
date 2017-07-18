@@ -68,19 +68,20 @@ public class WifiService extends IntentService {
 
             // take a measurement
             try {
-                wirelessFile.seek(162); // MAGIC !!! Go to the values line
                 String line = wirelessFile.readLine();
-                System.out.println(line);
                 if (line != null) {
                     Float rssi = parseRssi(line);
-                    System.out.println(rssi);
-                    if (rssi != null)
+                    if (rssi != null) {
+                        System.out.println(line);
+                        System.out.println(rssi);
                         wifiMeasurementsBuffer.add(
                                 new WifiMeasurement(
                                         System.nanoTime(),
                                         new float[]{rssi}
                                 )
                         );
+                        wirelessFile.seek(0); // Go to start
+                    }
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -107,7 +108,7 @@ public class WifiService extends IntentService {
     private static Float parseRssi(String str){
         if (str.contains("wlan")) {
             String[] split = str.split("\\s+");
-            String rssiStr = split[3];
+            String rssiStr = split[4];
             if (rssiStr.contains("."))
                 return Float.valueOf(rssiStr);
         }

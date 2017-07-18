@@ -1,5 +1,9 @@
+# Android studio
 .idea
 build
+
+# Gradle
+.gradle
 
 #emacs
 *\#*
