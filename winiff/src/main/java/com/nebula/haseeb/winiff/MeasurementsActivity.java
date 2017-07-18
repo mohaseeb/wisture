@@ -2,10 +2,13 @@ package com.nebula.haseeb.winiff;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -139,8 +142,16 @@ public class MeasurementsActivity extends AppCompatActivity {
      * induction service
      */
     private void startInduction(){
+        String gatewayAddress = getGatewayAddress();
         Intent induction = new Intent(this, TrafficInductionService.class);
+        induction.putExtra("gatewayAddress", gatewayAddress);
         this.startService(induction);
+    }
+
+    private String getGatewayAddress(){
+        WifiManager manager = (WifiManager) this.getApplicationContext().getSystemService(WIFI_SERVICE);
+        DhcpInfo info = manager.getDhcpInfo();
+        return Formatter.formatIpAddress(info.gateway);
     }
 
     private void stopInduction(){

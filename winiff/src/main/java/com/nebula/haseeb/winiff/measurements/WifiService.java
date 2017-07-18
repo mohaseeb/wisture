@@ -72,8 +72,6 @@ public class WifiService extends IntentService {
                 if (line != null) {
                     Float rssi = parseRssi(line);
                     if (rssi != null) {
-                        System.out.println(line);
-                        System.out.println(rssi);
                         wifiMeasurementsBuffer.add(
                                 new WifiMeasurement(
                                         System.nanoTime(),
