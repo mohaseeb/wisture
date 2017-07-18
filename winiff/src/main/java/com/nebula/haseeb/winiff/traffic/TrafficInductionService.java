@@ -1,10 +1,7 @@
 package com.nebula.haseeb.winiff.traffic;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
 
 import com.nebula.haseeb.winiff.MeasurementsActivity;
 
@@ -12,9 +9,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
-
-import android.support.annotation.Nullable;
-import android.text.format.Formatter;
 
 /**
  * Created by haseeb on 11/23/16.

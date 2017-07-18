@@ -91,7 +91,7 @@ public class MeasurementsActivity extends AppCompatActivity {
         measurementOngoing = true;
         measurementStopped = false;
         startWifiMeasurementService();
-        startInduction();
+        if (measurementsParameters.isInduceTraffic()) startInduction();
     }
 
     private void endMeasurements() {
@@ -102,7 +102,7 @@ public class MeasurementsActivity extends AppCompatActivity {
         unregisterChartMeasurementsReceiver();
         unregisterPersistenceMeasurementsReceiver();
         stopWifiMeasurementService();
-        stopInduction();
+        if (measurementsParameters.isInduceTraffic()) stopInduction();
     }
 
     private void registerPersistenceMeasurementsReceiver() {

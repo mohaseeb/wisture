@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.nebula.haseeb.winiff.persistence.MeasurementsFileManagementActivity;
@@ -57,20 +58,26 @@ public class MeasurementPreparationActivity extends AppCompatActivity {
     }
 
     private void setDefaultParametersValues() {
+        // Measurement file name
         EditText measurementsFilePrefix = (EditText) findViewById(R.id.measurements_file_prefix);
         measurementsFilePrefix.setText(measurementsParameters.getMeasurementsFileNamePrefix());
-//        EditText samplesPerSecond = (EditText) findViewById(R.id.samples_per_second);
-//        samplesPerSecond.setText(String.valueOf(measurementsParameters.getSamplesPerSecond()));
+
+        // graph width
         EditText graphWidthSeconds = (EditText) findViewById(R.id.graph_width_seconds);
         graphWidthSeconds.setText(String.valueOf(measurementsParameters.getGraphWidthSeconds()));
     }
 
     private void getUserSetValues() {
+        // Measurement file name
         EditText measurementsFilePrefix = (EditText) findViewById(R.id.measurements_file_prefix);
         measurementsParameters.setMeasurementsFileNamePrefix(measurementsFilePrefix.getText().toString());
-//        EditText samplesPerSecond = (EditText) findViewById(R.id.samples_per_second);
-//        measurementsParameters.setSamplesPerSecond(Integer.valueOf(samplesPerSecond.getText().toString()));
+
+        // graph width
         EditText graphWidthSeconds = (EditText) findViewById(R.id.graph_width_seconds);
         measurementsParameters.setGraphWidthSeconds(Integer.valueOf(graphWidthSeconds.getText().toString()));
+
+        // traffic induction
+        CheckBox induceTrafficCheck = (CheckBox) findViewById(R.id.induceTraffic);
+        measurementsParameters.setInduceTraffic(induceTrafficCheck.isChecked());
     }
 }

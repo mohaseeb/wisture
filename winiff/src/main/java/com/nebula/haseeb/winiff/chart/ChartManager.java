@@ -13,7 +13,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.nebula.haseeb.winiff.R;
 import com.nebula.haseeb.winiff.measurements.ISeriesMeasurement;
-import com.nebula.haseeb.winiff.utils.Constants;
 import com.nebula.haseeb.winiff.utils.MeasurementsParameters;
 
 import java.util.ArrayList;

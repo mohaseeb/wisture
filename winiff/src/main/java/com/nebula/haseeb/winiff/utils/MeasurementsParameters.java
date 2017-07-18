@@ -9,6 +9,7 @@ public class MeasurementsParameters implements Serializable {
     private String measurementsFileNamePrefix = Constants.DEFAULT_MEASUREMENTS_FILE_RPEFIX;
     private int samplesPerSecond = Constants.DEFAULT_WIFI_RSS_SAMPLES_SECOND;
     private int graphWidthSeconds = Constants.DEFAULT_VISIBLE_WINDOW_WIDTH_SECONDS;
+    private boolean induceTraffic = true;
 
     public String getMeasurementsFileNamePrefix() {
         return measurementsFileNamePrefix;
@@ -32,5 +33,13 @@ public class MeasurementsParameters implements Serializable {
 
     public void setGraphWidthSeconds(int graphWidthSeconds) {
         this.graphWidthSeconds = graphWidthSeconds;
+    }
+
+    public boolean isInduceTraffic() {
+        return induceTraffic;
+    }
+
+    public void setInduceTraffic(boolean induceTraffic) {
+        this.induceTraffic = induceTraffic;
     }
 }

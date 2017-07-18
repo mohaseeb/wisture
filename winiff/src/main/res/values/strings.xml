@@ -13,4 +13,5 @@
     <string name="delete_files">Delete</string>
     <string name="end_measurement">End</string>
     <string name="share_files_string">Share via</string>
+    <string name="induce_artificial_traffic">Induce artificial traffic</string>
 </resources>
