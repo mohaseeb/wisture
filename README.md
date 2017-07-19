@@ -4,6 +4,7 @@ Wisture is a machine lerning (LSTM-RNN) and custom signal processing based solut
 
 # Winiff App
 As a part of Wisture, we developed an stand-alone Android app called "Winiff" (available in the Google Playstore). Using Winiff, one can record high-frequency Wi-Fi RSS values and save them to text files (the app provide means for exporting the saved RSSI files). The app uses an artificaial traffic induction (between the phone and the Wi-Fi access point (AP)) approach to enable useful and meaningful Radio Signal Strength values. We invite researchers, engineers, and the App develeopment community to test and improve the Winiff application and enable crowd-sourced smartphone Wi-Fi RSS datasets available for various machine learning related researches.
+The app includes options to enable or disable traffic induction, and supports both positive and negative RSSI values reported by the Wi-Fi device drivers on the smartphone.
 
 # Wisture App
 The machine learning (including signal processing) part of the Wisture solution is handled by the "Wisture" app (available in the Google PlayStore as a Beta version: https://play.google.com/store/apps/details?id=nebula.com.wisture&hl=en) developed in the course of this work. We plan to release the source codes of the Wisture in future, after upgrading the app to a stable version. 
