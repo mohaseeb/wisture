@@ -80,7 +80,8 @@ public class WifiService extends IntentService {
                         );
                         wirelessFile.seek(0); // Go to start
                     }
-                }
+                } else
+                    wirelessFile.seek(0); // Go to start
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -105,8 +106,9 @@ public class WifiService extends IntentService {
 
     private static Float parseRssi(String str){
         if (str.contains("wlan")) {
+            str = str.trim();
             String[] split = str.split("\\s+");
-            String rssiStr = split[4];
+            String rssiStr = split[3];
             if (rssiStr.contains("."))
                 return Float.valueOf(rssiStr);
         }
@@ -120,17 +122,22 @@ public class WifiService extends IntentService {
         System.out.println(rssi);
         if (rssi != null) throw new AssertionError();
 
-        str = "wlan0: 0000   49.  -61.  -256        0      0      0      7    751        0";
+        str = " wlan0: 0000   49.  -61.  -256        0      0      0      7    751        0";
         rssi = WifiService.parseRssi(str);
         System.out.println(rssi);
-        if (rssi != -61.0) throw new AssertionError();
+        if (rssi == null || rssi != -61.0) throw new AssertionError();
 
         str = "wlan0: 0000   49.  61.  -256        0      0      0      7    751        0";
         rssi = WifiService.parseRssi(str);
         System.out.println(rssi);
-        if (rssi != 61.0) throw new AssertionError();
+        if (rssi == null || rssi != 61.0) throw new AssertionError();
 
-        str = "wlan0: 0000   49.  61  -256        0      0      0      7    751        0";
+        str = " wlan0: 0000   0.  204.  -256        0      0      0      7    751        0";
+        rssi = WifiService.parseRssi(str);
+        System.out.println(rssi);
+        if (rssi == null || rssi != 204.0) throw new AssertionError();
+
+        str = " wlan0: 0000   49.  61  -256        0      0      0      7    751        0";
         rssi = WifiService.parseRssi(str);
         System.out.println(rssi);
         if (rssi != null) throw new AssertionError();
