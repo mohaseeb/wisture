@@ -7,7 +7,7 @@ As a part of Wisture, we developed an stand-alone Android app called "Winiff" (a
 The app includes options to enable or disable traffic induction, and supports both positive and negative RSSI values reported by the Wi-Fi device drivers on the smartphone.
 
 # Wisture App
-The machine learning (including signal processing) part of the Wisture solution is handled by the "Wisture" app (available in the Google PlayStore as a Beta version: https://play.google.com/store/apps/details?id=nebula.com.wisture&hl=en) developed in the course of this work. We plan to release the source codes of the Wisture in future, after upgrading the app to a stable version. Please note the wisture app needs local calibration on the phone. This calibration feature will be available on the future stable version.
+The machine learning (including signal processing) part of the Wisture solution is handled by the "Wisture" app (available in the Google PlayStore as a Beta version: https://play.google.com/store/apps/details?id=org.nebula.wisture) developed in the course of this work. We plan to release the source codes of the Wisture in future, after upgrading the app to a stable version. Please note the wisture app needs local calibration on the phone. This calibration feature will be available on the future stable version.
 
 # Stand-alone Machine Learning solutions
 As part of the Wisture project, we developed codes/applications to implement several state-of-art machine learning solutions for classifying touch-less hand gestures based on the Wi-Fi RSS time-series data from smartphones.
