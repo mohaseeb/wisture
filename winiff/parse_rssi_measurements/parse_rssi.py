@@ -5,30 +5,27 @@ import pandas as pd
 import numpy as np
 
 SUPPORTED_GESTURES = ['swipe', 'push', 'pull']
-DATA_PATH = path.expanduser(
-    '~/ws/data/wisture/raw_exclude_no_induction'
-)
-OUT_PATH = path.expanduser(
-    '~/ws/data/wisture/raw_exclude_no_induction_processed'
-)
+
+# TODO DOCs
 
 
-def parse_and_dump(ds_path, out_path, freq='10L'):
+def parse_and_dump(input_dir, output_dir, resolution='10L'):
     # load the data
-    data, labels = load_dataset(ds_path, freq)
+    data, labels = load_dataset(input_dir, resolution)
     # data.shape -> n_samples X sample_size
     # labels.shape -> n_samples
 
     # print summary
-    print('freq: {}'.format(freq))
+    print('resolution: {}'.format(resolution))
     print('data shape: {}'.format(data.shape))
     print('labels shape: {}'.format(labels.shape))
     print('number of samples: {}'.format(data.shape[0]))
     print('sample size: {}'.format(data.shape[1]))
 
     # dump it compressed
-    dump_path = path.join(out_path, 'wisture_{}.npz'.format(freq))
+    dump_path = path.join(output_dir, 'wisture_{}.npz'.format(resolution))
     np.savez_compressed(file=dump_path, data=data, labels=labels)
+    print('Parsed data saved to: {}'.format(dump_path))
 
     # to load it
     # loaded = np.load(dump_path)
@@ -141,7 +138,14 @@ def get_windows(data, offset=0, size='10s', step='10s'):
 
 
 if __name__ == '__main__':
-    parse_and_dump(DATA_PATH, OUT_PATH, '5L')
-    parse_and_dump(DATA_PATH, OUT_PATH, '10L')
-    parse_and_dump(DATA_PATH, OUT_PATH, '50L')
-    parse_and_dump(DATA_PATH, OUT_PATH, '100L')
+    # raw_data_path = path.expanduser(
+    #     '~/ws/data/wisture/raw_exclude_no_induction'
+    # )
+    # parsed_data_path = path.expanduser(
+    #     '~/ws/data/wisture/raw_exclude_no_induction_processed'
+    # )
+    # parse_and_dump(raw_data_path, parsed_data_path, '5ms')
+    # parse_and_dump(raw_data_path, parsed_data_path, '10ms')
+    # parse_and_dump(raw_data_path, parsed_data_path, '50ms')
+    # parse_and_dump(raw_data_path, parsed_data_path, '100ms')
+    pass
