@@ -4,14 +4,19 @@ from os import path, listdir
 import pandas as pd
 import numpy as np
 
-SUPPORTED_GESTURES = ['swipe', 'push', 'pull']
-
-# TODO DOCs
+LABELS = ['swipe', 'push', 'pull']
 
 
-def parse_and_dump(input_dir, output_dir, resolution='10L'):
+def parse_and_dump(input_dir, output_dir, resolution='10ms'):
+    """
+    Args:
+        input_dir (str): the dirctory that contains the RSSI measurements files
+        output_dir (str): the directory to which parsed data is dumped
+        resolution (pandas.freqstr): resolution of the output (regular
+        timeseries) data.
+    """
     # load the data
-    data, labels = load_dataset(input_dir, resolution)
+    data, labels = _load_dataset(input_dir, resolution)
     # data.shape -> n_samples X sample_size
     # labels.shape -> n_samples
 
@@ -33,7 +38,7 @@ def parse_and_dump(input_dir, output_dir, resolution='10L'):
     # labels = loaded['labels']
 
 
-def load_dataset(ds_path, freq='10L'):
+def _load_dataset(ds_path, freq='10L'):
     """
     Args:
         ds_path (str): root directory containing the raw data files
@@ -45,13 +50,12 @@ def load_dataset(ds_path, freq='10L'):
             labels.shape -> n_samples
 
     """
+
     def _is_data_file(file_name):
         parts = file_name.split('_')
         ext = parts[-1].split('.')[1]
-        return parts[0] in SUPPORTED_GESTURES and ext == 'txt'
+        return parts[0] in LABELS and ext == 'txt'
 
-    #
-    i = 0
     samples = []
     labels = []
     for ds_file in listdir(ds_path):
@@ -61,13 +65,13 @@ def load_dataset(ds_path, freq='10L'):
 
         # load the data into DataFrame
         file_path = path.join(ds_path, ds_file)
-        data_raw, start, gap, gesture = load_measurement_data(file_path)
+        data_raw, start, gap, label = _load_measurement_data(file_path)
 
         # resample: irregular -> regular
         data_regular = data_raw.resample(freq).mean().interpolate()
 
         # chunk it
-        data_windowed = get_windows(
+        data_windowed = _get_windows(
             data_regular,
             offset=start + 's',
             size=gap + 's',
@@ -75,7 +79,7 @@ def load_dataset(ds_path, freq='10L'):
         )
 
         samples.extend([window.values.ravel() for window in data_windowed])
-        label = SUPPORTED_GESTURES.index(gesture)
+        label = LABELS.index(label)
         labels.extend([label] * len(data_windowed))
 
     samples = np.vstack(samples)
@@ -84,7 +88,44 @@ def load_dataset(ds_path, freq='10L'):
     return samples, labels
 
 
-def load_measurement_data(file_path):
+def _read_raw_file_into_df(file_path):
+    """
+    Expected file format is:
+        time	rssi
+        145634607014179	-66.0
+        145634615740486	-66.0
+        145634619692833	-67.0
+        145634623423563	-68.0
+    or:
+        145634607014179	-66.0
+        145634615740486	-66.0
+        145634619692833	-67.0
+        145634623423563	-68.0
+
+    """
+    df = pd.read_csv(file_path, sep='\t', header=None)
+    # df = pd.read_csv(file_path, sep='\t', )
+    #
+    # import ipdb; ipdb.set_trace()
+
+    # loading with head=None, will ignore the head line in the file. Below is
+    # to remove the ignored header line
+    if df.iloc[0][0] == 'time':
+        df.drop([0], inplace=True)
+        # the header row will cause the file to loaded as staring, below is
+        # to convert it float64
+        df = df.astype('float64')
+
+    # Some measurements files doesn't have a header (i.e. time, rssi),
+    # we'll create a header if there wasn't one
+    # such files will have [0, 1] as columns
+    if 'time' not in df.columns:
+        df.rename(columns={0: 'time', 1: 'rssi'}, inplace=True)
+
+    return df
+
+
+def _load_measurement_data(file_path):
     """
     Args:
         file_path (str):
@@ -93,23 +134,26 @@ def load_measurement_data(file_path):
         pd.DataFrame
     """
     # load the file
-    data = pd.read_csv(file_path, sep='\t')
+    data = _read_raw_file_into_df(file_path)
 
     # time column to datatime type
-    data['time'] -= data['time'][0]
+    first_row_index = data.first_valid_index()
+    data['time'] -= data['time'][first_row_index]
+    # all measurements times are now relative to the first measurement
     data['time'] = pd.to_datetime(data['time'], unit='ns')
+    # time is in nanoseconds
     data = data.set_index('time')
 
     # get the metadata from the filepath
     file_name_parts = path.basename(file_path).split('_')
-    gesture = file_name_parts[0]
-    first_gesture_start = file_name_parts[1]
-    gesture_gap = file_name_parts[2]
+    label = file_name_parts[0]
+    first_event_start = file_name_parts[1]
+    event_gap = file_name_parts[2]
 
-    return data, first_gesture_start, gesture_gap, gesture
+    return data, first_event_start, event_gap, label
 
 
-def get_windows(data, offset=0, size='10s', step='10s'):
+def _get_windows(data, offset=0, size='10s', step='10s'):
     """
     Args:
         data (pd.DataFrame):

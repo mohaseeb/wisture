@@ -1,35 +1,70 @@
-The [prase_rssi.py](parse_rssi.py) script will parse the raw RSSI measurement
-file created by the app, and save the parsed data into a numpy array. It also
-saves the numpy array to disk. This script assume the data was recorded in a
- specific way: TODO describe ?????
- 
- TODO describe loaded data format
-
-### Usage
-1. Make sure numpy and pandas python packages are installed in your python 
-environment.
-2. Place the measurement file(s) to be parsed on a directory. The measurement 
-file(s) need to be named as below:
-<label_name>_<first_gesture_start>_<gesture_gap>_<...>.txt
+## Parsing structurally recorded data
+[prase_rssi.py](parse_rssi.py) script is used to load the dataset described 
+[here](https://ieee-dataport.org/documents/wi-fi-signal-strength-measurements-smartphone-various-hand-gestures). 
+The output format is suited for using data to train machine learning models.
+ The script can also be used for when the RSSI recording is made while a 
+ repeated event (e.g. a hand gesture) was happening repeatedly with a fixed gap 
+ between consecutive events (e.g. every 10 seconds, a hand gesture is 
+ performed). For every recording:
+* First connect the phone to Wi-Fi, and start a new measurement in the 
+Winiff app.
+* Start the event, which is intended to happen while the RSSI recording is 
+ongoing (e.g. start performing the hand gesture). 
+* Mark the time the subject event was started in seconds, *start_time* (e.g. 
+the time when the first hand gesture was performed after the recording started, 
+e.g. 7 seconds).
+* Mark the time *gap*, in seconds, between each two occurrences of the 
+repeated event (e.g. the time between two consecutive hand gestures, e.g. 10 
+seconds).
+* Name the recoding file as below:
+```commandline
+<label_name>_<start_time>_<gap>_<...>.txt
+```
 example:
+```commandline
 swipe_7_10_20161223044637_20161223045638_small_room.txt
-Here the label is 'swipe',
-the first gesture started after 7 seconds from the recording start
-the gap between consecutive gestures is 10 seconds 
-3. From a python interpreter (e.g. ipython or python) execute:
+```
+Here the events have 'swipe' as label, the first event started 7 seconds 
+after the recording was started and the gap between consecutive events was 10 
+seconds.
+When run, the script will:
+* Parse the raw data.
+* Resample it into regular timeseries (The RSSI measurements made by Winiff 
+have irregular time interval).
+* Chunk the data into windows (one window per each one of the repeated events).
+* Store the results into two numpy arrays (one for the event windows and 
+another for the corresponding labels).
+ * Dump the arrays to disk after compressing them.
+### Usage
+1. Make the script dependencies available in your python environment.
+```commandline
+pip install -r requirements.txt
+```
+2. Specify you dataset labels using the *LABELS* variable in [prase_rssi.py](parse_rssi.py)  
+(make sure they are the same as the ones used to name your measurements 
+files). E.g.:
 ```python
-raw_data_dir = '/path/to/raw/data/directory'
-parsed_data_dir = '/path/to/parsed/data/directory'
-parsed_data_resolution = '5ms'
+LABELS = ['swipe', 'push', 'pull']
+``` 
+2. Load the script from a python interpreter (e.g. ipython or python) 
+```commandline
+ipython -i parse_rssi.py
+```
+or 
+```commandline
+python -i parse_rssi.py
+```
+and execute:
+```python
 parse_and_dump(
-    input_dir=raw_data_dir, 
-    output_dir=parsed_data_dir, 
-    resolution=parsed_data_resolution
+    input_dir='/path/to/raw/data/directory', 
+    output_dir='/path/to/parsed/data/directory', 
+    resolution='5ms'  # output data resolution
 )
 ```
-The parsed data will be saved compressed under parsed_data_dir, named as 
-<label_name>_<resolution>.npz, (e.g. wisture_5ms.npz).
-4. You can load the parsed data as follows:
+The parsed data will be saved compressed under the sepcified output_dir, named
+ as <label_name>\_\<resolution>.npz, (e.g. wisture_5ms.npz).
+3. You can load the parsed data as follows:
 ```python
 import numpy as np
 dataset_path = '/path/to/parsed/data/directory/wisture_5ms.npz'
