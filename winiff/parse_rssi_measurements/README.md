@@ -1,4 +1,49 @@
-## Parsing structurally recorded data
+## Parsing an RSSI measurement file using python
+Below commands shows how to use python to parse, load and plot data from an 
+RSSI measurement file created by the Winiff app. The Winiff app 
+create text files with below format (first column is time, second column is 
+RSSI measurements):
+```text
+145634607014179	-66.0
+145634615740486	-66.0
+145634619692833	-67.0
+145634623423563	-68.0
+```
+* Install required libraries
+```commandline
+$ pip install -r requirements.txt
+```
+* Start a python interpreter (e.g. ipython or python)
+```commandline
+$ ipython
+```
+* Specify the path to the measurement file, and load into a Dataframe. 
+```python
+measurement_file = '/path/to/the/measurement/file'
+import pandas as pd
+df = pd.read_csv(measurement_file, sep='\t', names=['time', 'rssi'], index_col='time')
+```
+* Plot the data
+```python
+import matplotlib.pyplot as plt
+df.plot()
+plt.show()
+```
+* Convert to regular timeseries (The RSSI measurements made by Winiff have 
+irregular time intervals).
+```python
+df.index = pd.to_datetime(df.index, unit='ns')  # convert index to datetime
+df_regular = df.resample('10ms').mean()  # 10ms between samples
+```
+* Put the data into numpy array and plot
+```python
+data = df_regular.values.ravel()
+plt.plot(data)
+plt.show()
+```
+
+
+## Parsing structurally recorded measurement data
 [prase_rssi.py](parse_rssi.py) script is used to load the dataset described 
 [here](https://ieee-dataport.org/documents/wi-fi-signal-strength-measurements-smartphone-various-hand-gestures). 
 The output format is suited for using data to train machine learning models.
@@ -30,7 +75,7 @@ seconds.
 When run, the script will:
 * Parse the raw data.
 * Resample it into regular timeseries (The RSSI measurements made by Winiff 
-have irregular time interval).
+have irregular time intervals).
 * Chunk the data into windows (one window per each one of the repeated events).
 * Store the results into two numpy arrays (one for the event windows and 
 another for the corresponding labels).
