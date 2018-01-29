@@ -1,8 +1,8 @@
 ## Parsing an RSSI measurement file using python
 Below commands shows how to use python to parse, load and plot data from an 
 RSSI measurement file created by the Winiff app. The Winiff app 
-create text files with below format (first column is time, second column is 
-RSSI measurements):
+create text files with below format (first column is measurement time, 
+second column is the RSSI value):
 ```text
 145634607014179	-66.0
 145634615740486	-66.0
