@@ -1,4 +1,4 @@
-This repository contains the source code relateds to the reserach work reported by the paper: M.Haseeb and R.Parasuraman, "Wisture: RNN-based Learning of Wireless Signals for Gesture Recognition in Unmodified Smartphones", submitted to the Journal of Neural Networks, and a preprint available in ArXiv: https://arxiv.org/abs/1707.08569
+This repository contains the source code relateds to the reserach work reported by the paper: M.Haseeb and R.Parasuraman, "Wisture: RNN-based Learning of Wireless Signals for Gesture Recognition in Unmodified Smartphones", available as a preprint in ArXiv: https://arxiv.org/abs/1707.08569
 
 # Wisture Solution
 Wisture is a machine learning (LSTM-RNN) and custom signal processing based solution for recognizing over-the-air hand gestures (such as swipe, push, pull, etc.) using Wi-Fi Received Signal Strength on unmodified smartphones (without requiring changes to existing hardware and software/OS of the phone). A demonstration video is available at https://www.youtube.com/watch?v=5v4KpAFvxpU&feature=youtu.be
